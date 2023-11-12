@@ -7,3 +7,6 @@
 
 .dev.vars
 .wrangler
+
+# Ignored due to containing environment variables
+wrangler.toml
