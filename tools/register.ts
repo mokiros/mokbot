@@ -1,36 +1,50 @@
-import { RouteBases, Routes } from 'discord-api-types/rest/v10'
+import {
+	RESTPutAPIApplicationCommandsJSONBody,
+	RouteBases,
+	Routes,
+} from 'discord-api-types/rest/v10'
 import { config } from 'dotenv'
 import CommandMap from '../src/commands'
+import { Snowflake } from 'discord-api-types/globals'
+
 config({ path: '.dev.vars' })
 
-const token = process.env.DISCORD_BOT_TOKEN
-const applicationId = process.env.DISCORD_APP_ID
-
-if (!token) {
-	throw new Error('The DISCORD_TOKEN environment variable is required.')
+function getEnvVariable(name: string): string {
+	const variable = process.env[name]
+	if (!variable) {
+		throw new Error(`Missing environment variable: ${name}`)
+	}
+	return variable
 }
-if (!applicationId) {
-	throw new Error('The DISCORD_APPLICATION_ID environment variable is required.')
-}
-fetch(`${RouteBases.api}${Routes.applicationGuildCommands(applicationId, '374639346596315137')}`, {
-	headers: {
-		'Content-Type': 'application/json',
-		'Authorization': `Bot ${token}`,
-	},
-	method: 'PUT',
-	body: '[]',
-})
-const url = `${RouteBases.api}${Routes.applicationCommands(applicationId)}`
-const body = JSON.stringify(Object.values(CommandMap).map(v => v.params))
 
-const response = await fetch(url, {
-	headers: {
-		'Content-Type': 'application/json',
-		'Authorization': `Bot ${token}`,
-	},
-	method: 'PUT',
-	body: body,
-})
+async function registerCommands(cmds: RESTPutAPIApplicationCommandsJSONBody, guild?: Snowflake) {
+	const applicationId = getEnvVariable('DISCORD_APP_ID')
+	const token = getEnvVariable('DISCORD_BOT_TOKEN')
+	let url = RouteBases.api
+	if (guild) {
+		url += Routes.applicationGuildCommands(applicationId, guild)
+	} else {
+		url += Routes.applicationCommands(applicationId)
+	}
+	const response = await fetch(url, {
+		headers: {
+			'Content-Type': 'application/json',
+			'Authorization': `Bot ${token}`,
+		},
+		method: 'PUT',
+		body: JSON.stringify(cmds),
+	})
+	return response
+}
+
+const arg_dev = process.argv.includes('--dev')
+const arg_clear_commands = process.argv.includes('--clear-commands')
+
+const cmds = arg_clear_commands ? [] : Object.values(CommandMap).map(v => v.params)
+const response = await registerCommands(
+	cmds,
+	arg_dev ? getEnvVariable('DISCORD_DEV_SERVER_ID') : undefined
+)
 
 if (response.ok) {
 	console.log('Registered all commands')
@@ -48,4 +62,5 @@ if (response.ok) {
 		console.error('Error reading body from request:', err)
 	}
 	console.error(errorText)
+	process.exit(1)
 }
