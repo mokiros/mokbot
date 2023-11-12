@@ -4,6 +4,24 @@ My Discord bot, written in Typescript, hosted on Cloudflare Workers, uses intera
 ## Installation and setup
 Clone the repository, run `npm install`.
 
+### Creating KV namespaces
+The bot uses Cloudflare KV to store per-guild configurations and cache command results.
+In order to create all of the required KV namespaces, use the following commands:
+```bash
+npx wrangler kv:namespace create GuildConfigs
+npx wrangler kv:namespace create RobloxPlayerCache
+npx wrangler kv:namespace create RobloxPageCursors
+```
+After runing the commands, copy the namespace ids into the `wrangler.toml` fie.
+
+To create preview namespaces that would be used for development, add `--preview` to the end:
+```bash
+npx wrangler kv:namespace create GuildConfigs --preview
+npx wrangler kv:namespace create RobloxPlayerCache --preview
+npx wrangler kv:namespace create RobloxPageCursors --preview
+```
+In development, wrangler will store KV data locally inside of `.wrangler` folder.
+
 ### Environment variables
 When developing locally, the `.dev.vars` file is used for environment variables.
 `wrangler.toml` file contains the environment variables that will be used in production.
