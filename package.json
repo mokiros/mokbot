@@ -8,7 +8,10 @@
 		"dev": "wrangler dev",
 		"start": "wrangler dev",
 		"test": "vitest run",
-		"register": "node --experimental-specifier-resolution=node --loader ts-node/esm ./src/register.ts"
+		"register": "node --experimental-specifier-resolution=node --loader ts-node/esm ./tools/register.ts",
+		"register_dev": "npm run register -- --dev",
+		"clear_dev_commands": "npm run register -- --dev --clear-commands",
+		"clear_prod_commands": "npm run register -- --clear-commands"
 	},
 	"devDependencies": {
 		"@cloudflare/workers-types": "^4.20231016.0",
