@@ -11,7 +11,6 @@ export default async function fetchDiscordApi<T extends object>(
 		method,
 		headers: {
 			'Content-Type': 'application/json',
-			'Authorization': `Bot ${env.DISCORD_BOT_TOKEN}`,
 		},
 		body: body ? JSON.stringify(body) : undefined,
 	})

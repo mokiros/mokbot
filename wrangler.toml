@@ -1,6 +1,6 @@
 main = "./src/index.ts"
 name = "mokbot"
-compatibility_date = "2023-08-15"
+compatibility_date = "2023-11-01"
 
 kv_namespaces = [
 	{ binding = "GuildConfigs", id = "EDIT_ME", preview_id = "EDIT_ME" },
