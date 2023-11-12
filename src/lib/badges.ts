@@ -173,7 +173,9 @@ export async function getBadgesButton(
 		if (newNode === null) {
 			node.lastNodeCount = node.count
 			node.nextCursor = null
-			await saveNode(env, node)
+			if (node.nextCursor || node.nextNode || node.previousCursor || node.previousNode) {
+				await saveNode(env, node)
+			}
 			return generateBadgesMessage(node, caller)
 		}
 		if (direction === 'next') {
