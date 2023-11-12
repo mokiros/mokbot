@@ -77,7 +77,11 @@ const GetBadgesCommand: CommandObject = {
 		if (!universeId) {
 			return 'Unable to retrieve universe ID from place ID'
 		}
-		return await getBadgesNew(env, universeId, playerInfo)
+		const caller = interaction.user?.id || interaction.member?.user.id
+		if (!caller) {
+			return 'Unable to retrieve discord user id (???)'
+		}
+		return await getBadgesNew(env, caller, universeId, playerInfo)
 	}),
 }
 

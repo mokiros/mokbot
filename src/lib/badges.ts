@@ -4,6 +4,7 @@ import {
 	APIMessageActionRowComponent,
 	RESTPostAPIWebhookWithTokenJSONBody,
 	MessageFlags,
+	Snowflake,
 } from 'discord-api-types/v10'
 import { Env } from '../Env'
 import { getUniverseBadges, getBadgesAwardedToUser } from './roblox'
@@ -50,7 +51,10 @@ async function getBadgeMap(env: Env, universeId: number, playerId: number, curso
 	}
 }
 
-function generateBadgesMessage(node: CacheNode): RESTPostAPIWebhookWithTokenJSONBody {
+function generateBadgesMessage(
+	node: CacheNode,
+	caller: Snowflake
+): RESTPostAPIWebhookWithTokenJSONBody {
 	const player = node.playerData
 	const plrname =
 		player.displayName === player.name
@@ -72,14 +76,14 @@ function generateBadgesMessage(node: CacheNode): RESTPostAPIWebhookWithTokenJSON
 			{
 				type: ComponentType.Button,
 				label: 'Previous',
-				custom_id: `getbadges/prev/${node.id}`,
+				custom_id: `getbadges/prev/${caller}/${node.id}`,
 				style: ButtonStyle.Primary,
 				disabled: !prev,
 			},
 			{
 				type: ComponentType.Button,
 				label: 'Next',
-				custom_id: `getbadges/next/${node.id}`,
+				custom_id: `getbadges/next/${caller}/${node.id}`,
 				style: ButtonStyle.Primary,
 				disabled: !next,
 			},
@@ -133,7 +137,12 @@ async function generateNode(env: Env, universeId: number, player: UserResponse, 
 	return node
 }
 
-export async function getBadgesButton(env: Env, direction: 'prev' | 'next', nodeId: string) {
+export async function getBadgesButton(
+	env: Env,
+	caller: Snowflake,
+	direction: 'prev' | 'next',
+	nodeId: string
+) {
 	const cachedNode = await env.RobloxPageCursors.get(nodeId, 'text')
 	if (!cachedNode) {
 		throw new StatusError(500, { error: 'Cached node not found' })
@@ -165,7 +174,7 @@ export async function getBadgesButton(env: Env, direction: 'prev' | 'next', node
 			node.lastNodeCount = node.count
 			node.nextCursor = null
 			await saveNode(env, node)
-			return generateBadgesMessage(node)
+			return generateBadgesMessage(node, caller)
 		}
 		if (direction === 'next') {
 			node.nextNode = newNode.id
@@ -187,10 +196,15 @@ export async function getBadgesButton(env: Env, direction: 'prev' | 'next', node
 		newNode.lastNodeCount = node.lastNodeCount
 		await saveNode(env, newNode)
 	}
-	return generateBadgesMessage(newNode)
+	return generateBadgesMessage(newNode, caller)
 }
 
-export async function getBadgesNew(env: Env, universeId: number, player: UserResponse) {
+export async function getBadgesNew(
+	env: Env,
+	caller: Snowflake,
+	universeId: number,
+	player: UserResponse
+) {
 	const node = await generateNode(env, universeId, player)
 	if (!node) {
 		return {
@@ -199,5 +213,5 @@ export async function getBadgesNew(env: Env, universeId: number, player: UserRes
 		}
 	}
 	await saveNode(env, node)
-	return generateBadgesMessage(node)
+	return generateBadgesMessage(node, caller)
 }

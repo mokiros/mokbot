@@ -5,6 +5,7 @@ import {
 	APIMessageComponentInteraction,
 	APIInteractionResponseUpdateMessage,
 	APIInteractionResponseDeferredMessageUpdate,
+	APIInteractionResponseChannelMessageWithSource,
 } from 'discord-api-types/v10'
 import { Env } from '../../Env'
 
@@ -26,6 +27,7 @@ export interface CommandObject {
 export type ComponentResult =
 	| APIInteractionResponseUpdateMessage
 	| APIInteractionResponseDeferredMessageUpdate
+	| APIInteractionResponseChannelMessageWithSource
 
 export interface ComponentObject {
 	name: string
