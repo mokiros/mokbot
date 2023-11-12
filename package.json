@@ -1,0 +1,30 @@
+{
+	"name": "mokbot",
+	"version": "0.0.0",
+	"private": true,
+	"type": "module",
+	"scripts": {
+		"deploy": "wrangler deploy src/index.ts",
+		"dev": "wrangler dev",
+		"start": "wrangler dev",
+		"test": "vitest run",
+		"register": "node --experimental-specifier-resolution=node --loader ts-node/esm ./src/register.ts"
+	},
+	"devDependencies": {
+		"@cloudflare/workers-types": "^4.20231016.0",
+		"@typescript-eslint/eslint-plugin": "^6.10.0",
+		"@typescript-eslint/parser": "^6.10.0",
+		"discord-api-types": "^0.37.63",
+		"dotenv": "^16.3.1",
+		"eslint": "^8.53.0",
+		"eslint-config-prettier": "^9.0.0",
+		"eslint-plugin-prettier": "^5.0.1",
+		"ts-node": "^10.9.1",
+		"typescript": "^5.0.4",
+		"wrangler": "^3.0.0"
+	},
+	"dependencies": {
+		"discord-interactions": "^3.4.0",
+		"itty-router": "^4.0.23"
+	}
+}

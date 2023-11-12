@@ -1,0 +1,15 @@
+main = "./src/index.ts"
+name = "discord-bot-worker"
+compatibility_date = "2023-08-15"
+
+kv_namespaces = [
+	{ binding = "GuildConfigs", id = "EDIT_ME", preview_id = "EDIT_ME" },
+	{ binding = "RobloxPlayerCache", id = "EDIT_ME", preview_id = "EDIT_ME" },
+	{ binding = "RobloxPageCursors", id = "EDIT_ME", preview_id = "EDIT_ME" }
+]
+
+[vars]
+DISCORD_APP_ID = "EDIT_ME"
+DISCORD_APP_PUBLIC_KEY = "EDIT_ME"
+ROBLOX_BADGE_LIMIT = "25"
+CACHE_NODE_EXPIRATION_SECONDS = "86400"
