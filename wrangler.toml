@@ -3,14 +3,12 @@ name = "mokbot"
 compatibility_date = "2023-11-01"
 
 kv_namespaces = [
-	{ binding = "GuildConfigs", id = "EDIT_ME", preview_id = "EDIT_ME" },
-	{ binding = "RobloxPlayerCache", id = "EDIT_ME", preview_id = "EDIT_ME" },
-	{ binding = "RobloxPageCursors", id = "EDIT_ME", preview_id = "EDIT_ME" }
+	{ binding = "GuildConfigs", id = "b875ecdb8a304188a829ba7e3c99ca61", preview_id = "4ad0d945b33e40f78680545e9a887451" },
+	{ binding = "RobloxPlayerCache", id = "67f150545eaf42e5bf787121b6c66647", preview_id = "ab82514b4e524c06bec59ae10addd6a5" },
+	{ binding = "RobloxPageCursors", id = "3669c5936dbe4fe68f7950416a08c901", preview_id = "ab2dab7f25f24190bf5fa655b857438c" }
 ]
 
 [vars]
-DISCORD_APP_ID = "EDIT_ME"
-DISCORD_APP_PUBLIC_KEY = "EDIT_ME"
 ROBLOX_BADGE_LIMIT = "25"
 CACHE_NODE_EXPIRATION_SECONDS = "86400"
 
